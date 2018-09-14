@@ -9,6 +9,10 @@ public class AudioManager : MonoBehaviour {
     public GameObject pooledObject;
     public int pooledAmount = 2;
     public bool willGrow = true;
+
+    [Space]
+    public bool dontDestroyOnLoad = false;
+
     private List<GameObject> pooledObjects;
     private List<AudioSourceElement> pooledObjectsAudioSourceEl;    // Store the Audio Source component reference for fast access
 
@@ -25,10 +29,14 @@ public class AudioManager : MonoBehaviour {
         {
             // If that is the case, we destroy other instances
             Destroy(gameObject);
+            return;
         }
 
         // Here we save our singleton instance
         Instance = this;
+
+        if (dontDestroyOnLoad)
+            DontDestroyOnLoad(gameObject);
 
         InitializePooledObjects();
     }
@@ -107,6 +115,19 @@ public class AudioManager : MonoBehaviour {
     }
 
     #endregion
+
+    public bool IsPlaying(Sound s)
+    {
+        for (int i = 0; i < pooledObjectsAudioSourceEl.Count; i++)
+        {
+            if (ReferenceEquals(pooledObjectsAudioSourceEl[i].sound, s))
+            {
+                return pooledObjectsAudioSourceEl[i].audioSource.isPlaying;
+            }
+        }
+
+        return false;
+    }
 
     #region Pooling
     void InitializePooledObjects()

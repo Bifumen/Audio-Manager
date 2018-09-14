@@ -23,6 +23,7 @@ namespace AudioPoolingSystem
 
         [Space]
         public AudioMixerGroup mixer;
+        public bool stopOnDisable;
 
         public Sound(AudioClip audioClip,bool willLoop)
         {
@@ -30,15 +31,17 @@ namespace AudioPoolingSystem
             volume = 1;
             pitch = 1;
             loop = willLoop;
+            stopOnDisable = false;
         }
 
-        public Sound(AudioClip audioClip, bool willLoop, float audioVolume,float audioPitch,AudioMixerGroup mixerGroup)
+        public Sound(AudioClip audioClip, bool willLoop, float audioVolume, float audioPitch, AudioMixerGroup mixerGroup, bool stopOnDis)
         {
             clip = audioClip;
             volume = audioVolume;
             pitch = audioPitch;
             loop = willLoop;
             mixer = mixerGroup;
+            stopOnDisable = stopOnDis;
         }
     }
 }
